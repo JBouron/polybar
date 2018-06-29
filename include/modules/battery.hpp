@@ -76,10 +76,28 @@ namespace modules {
 
     static const size_t SKIP_N_UNCHANGED{3_z};
 
+    struct battery_context {
+	    unique_ptr<state_reader> m_state_reader;
+	    unique_ptr<capacity_reader> m_capacity_reader;
+	    unique_ptr<rate_reader> m_rate_reader;
+	    unique_ptr<consumption_reader> m_consumption_reader;
+	    string m_fstate;
+	    string m_fcapnow;
+	    string m_fcapfull;
+	    string m_frate;
+	    string m_fvoltage;
+    };
+void create_battery_context(string path_adapter, string path_battery, struct battery_module::battery_context *ctx);
+vector<struct battery_context*> m_batteries;
     unique_ptr<state_reader> m_state_reader;
     unique_ptr<capacity_reader> m_capacity_reader;
     unique_ptr<rate_reader> m_rate_reader;
     unique_ptr<consumption_reader> m_consumption_reader;
+    string m_fstate;
+    string m_fcapnow;
+    string m_fcapfull;
+    string m_frate;
+    string m_fvoltage;
 
     label_t m_label_charging;
     label_t m_label_discharging;
@@ -88,12 +106,6 @@ namespace modules {
     animation_t m_animation_discharging;
     progressbar_t m_bar_capacity;
     ramp_t m_ramp_capacity;
-
-    string m_fstate;
-    string m_fcapnow;
-    string m_fcapfull;
-    string m_frate;
-    string m_fvoltage;
 
     state m_state{state::DISCHARGING};
     int m_percentage{0};
